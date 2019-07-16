@@ -1,5 +1,5 @@
 // Global var definitions
-var topics = ["MICHAEL SCOTT", "DWIGHT SCHRUTE", "JIM HALPERT", "PAM BEESLY", "KEVIN MALONE", "STANLEY HUDSON", "MEREDITH PALMER", "ANDY BERNARD", "ANGELA MARTIN", "KELLY KAPOOR","DARRYL PHILBIN", "ERIN HANNON", ];
+var topics = ["MICHAEL SCOTT", "DWIGHT SCHRUTE", "JIM HALPERT", "PAM BEESLY", "KEVIN MALONE", "STANLEY HUDSON", "MEREDITH PALMER", "ANDY BERNARD", "ANGELA MARTIN", "KELLY KAPOOR","DARRYL PHILBIN", "ERIN HANNON"];
 
 //jQuery
 $(document).ready(function() {
@@ -12,14 +12,22 @@ function createBtn() {
     $("#btnWrapper").empty();
     for (var j = 0; j <topics.length; j++) {
         var btnCreate = $("<button>").text(topics[j].toUpperCase());
-        btnCreate.attr("type","button");        
+        btnCreate.attr("type","button");
         btnCreate.attr("class","btn btn-sm btn-success");
-        btnCreate.attr("data-toggle","tooltip");
-        btnCreate.attr("data-placement","top");
-        btnCreate.attr("title","Click to Generate 9 Giphys");
         $("#btnWrapper").append(btnCreate);
     }
 };
+
+// Add button on search
+$("#searchBtn").on("click", function(event) {
+    event.preventDefault();
+    if ($("#searchInput").val()=="") {
+        alert("Please enter a search term!");
+        return;
+    }
+    topics.push($("#searchInput").val().toUpperCase());
+    createBtn();
+});
 
 // Generate static gifs and set attributes to allow for animate-on-click functionality
 $("#btnWrapper").on("click", "button", function() {
