@@ -1,5 +1,5 @@
 // Global var definitions
-var topics = ["MICHAEL SCOTT", "DWIGHT SCHRUTE"];
+var topics = ["MICHAEL SCOTT", "DWIGHT SCHRUTE", "JIM HALPERT", "PAM BEESLY", "KEVIN MALONE", "STANLEY HUDSON", "MEREDITH PALMER", "ANDY BERNARD", "ANGELA MARTIN", "KELLY KAPOOR","DARRYL PHILBIN", "ERIN HANNON", ];
 
 //jQuery
 $(document).ready(function() {
@@ -12,7 +12,11 @@ function createBtn() {
     $("#btnWrapper").empty();
     for (var j = 0; j <topics.length; j++) {
         var btnCreate = $("<button>").text(topics[j].toUpperCase());
-        btnCreate.attr("class","btn btn-sm btn-success")
+        btnCreate.attr("type","button");        
+        btnCreate.attr("class","btn btn-sm btn-success");
+        btnCreate.attr("data-toggle","tooltip");
+        btnCreate.attr("data-placement","top");
+        btnCreate.attr("title","Click to Generate 9 Giphys");
         $("#btnWrapper").append(btnCreate);
     }
 };
@@ -36,7 +40,7 @@ $("#btnWrapper").on("click", "button", function() {
             var title = results[i].title;
             var rating = results[i].rating.toUpperCase();
             var imgDiv = $("<div>");
-            var pTitle = $("<p>").text(title.toUpperCase());
+            var pTitle = $("<p>").text(title.toUpperCase().split(" GIF")[0]);
             var pRating = $("<p>").text(rating);
             var image = $("<img>");
 
@@ -47,6 +51,7 @@ $("#btnWrapper").on("click", "button", function() {
             image.attr("src-static", results[i].images.fixed_width_still.url);
             image.attr("src-animated", results[i].images.fixed_width.url);
             image.attr("animation-status","static");
+            image.attr("animation-status-all","static");
             imgDiv.prepend(pTitle);
             imgDiv.prepend(pRating);
             imgDiv.prepend(image);
@@ -56,37 +61,35 @@ $("#btnWrapper").on("click", "button", function() {
     });
 });
 
-//Animate on click
+// Animate on click
 $("#imgWrapper").on("click", "img", function() {
 
     var status = $(this).attr("animation-status");
 
     if (status === "static") {
         $(this).attr("src", $(this).attr("src-animated"));
-        $(this).attr("animation-status", "animated")
+        $(this).attr("animation-status", "animated");
     } else {
         $(this).attr("src", $(this).attr("src-static"));
-        $(this).attr("animation-status", "static")
+        $(this).attr("animation-status", "static");
     };
 });
 
-// Search button click listener that adds a button to the button wrapper
-$("#searchBtn").on("click", function(event) {
-    event.preventDefault();
-    
-    topics.push($("#searchInput").val());
-    createBtn();
+// Animate all with button
+$("#animateAllBtn").on("click", function() {
+ 
+    $("img").each(function() {
+        
+        var statusAll = $(this).attr("animation-status-all");
 
-    // topics.push(searchKey);
-
-    // if (searchInput === "") {
-    //     alert("Please enter a search term!");
-    // } else {
-    // searchInput = $("#searchInput").val().toUpperCase();
-    // var btnCreate = $("<button>").text(searchInput);
-    // btnCreate.attr("class","btn btn-sm btn-success")
-    // $("#btnWrapper").append(btnCreate);
-    // }
+        if (statusAll === "static") {
+            $(this).attr("src", $(this).attr("src-animated"));
+            $(this).attr("animation-status-all", "animated");
+        } else {
+            $(this).attr("src", $(this).attr("src-static"));
+            $(this).attr("animation-status-all", "static");
+        };
+    });
 });
 
 });//end jQuery
